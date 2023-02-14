@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -31,8 +29,53 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deploy on Azure Static Web App
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Login Azure CLI
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+az login
+```
+
+Create a resource group if needed
+- [az group](https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-create) - additional info
+```bash
+az group create -l westus -n MyResourceGroup
+```
+
+Create a static web app under a resource group and add Github workflow to deploy automatically.
+- [az staticwebapp](https://learn.microsoft.com/en-us/cli/azure/staticwebapp?view=azure-cli-latest) - additional info
+```bash
+az staticwebapp create -n StarterNextJSTailwindCSS -g StarterNextJS -s https://github.com/<YOUR_GITHUB_USERNAME>/starter-nextjs-tailwindcss -l WestUs2 -b main --login-with-github
+```
+
+Pull latest changes
+```bash
+git pull
+```
+
+Check deployment status at 
+```bash 
+https://github.com/<YOUR_GITHUB_USERNAME>/starter-nextjs-tailwindcss/actions
+```
+
+## Delete static web app and remove commit
+
+Delete static web app created in Azure
+```bash
+az staticwebapp delete -n StarterNextJSTailwindCSS -g StarterNextJS
+```
+
+Delete a resource group
+```bash
+az group delete -n MyResourceGroup
+```
+
+Remove last commit and push removal to origin
+```bash
+git reset --hard HEAD^
+git push origin -f
+```
+
+# Additional Resources
+- [Deploy hybrid Next.js websites on Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid)
