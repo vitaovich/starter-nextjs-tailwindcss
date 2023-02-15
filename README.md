@@ -81,5 +81,11 @@ git reset --hard HEAD^
 git push origin -f
 ```
 
+## Other useful commands
+``` bash
+sed -i "s/starter-nextjs-tailwindcss/<your project name>/" package.json package-lock.json README.md
+chmod u+x setup.sh
+```
+
 # Additional Resources
 - [Deploy hybrid Next.js websites on Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid)
