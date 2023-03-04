@@ -87,6 +87,23 @@ sed -i "s/starter-nextjs-tailwindcss/<your project name>/" package.json package-
 chmod u+x setup.sh
 ```
 
+## Setting up HTTPS
+- [generate certs](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8#certificate-authority-ca)
+    ``` bash
+    openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
+    openssl rsa -in keytmp.pem -out key.pem
+    ```
+
+- [using local-ssl-proxy](https://github.com/vercel/next.js/discussions/10935#discussioncomment-144885)
+    ```bash
+    npm install -g local-ssl-proxy
+    ```
+
+    package.json
+    ```json
+    "dev-https": "local-ssl-proxy --key key.pem --cert cert.pem --source 3001 --target 3000",
+    ```
+
 # Additional Resources
 - [Deploy hybrid Next.js websites on Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/deploy-nextjs-hybrid)
 
