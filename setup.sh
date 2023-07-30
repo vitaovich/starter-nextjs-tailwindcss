@@ -1,4 +1,5 @@
 # ! /bin/bash
+DIR=$(pwd)
 PROJECTDIR=$(basename $(pwd))
 
 setup_folder="SETUP"
@@ -114,6 +115,7 @@ gh secret set AZSWA_API_KEY --body $azswa_api_key
 
 #Setup Github Actions
 GITHUB_ACTIONS_FOLDER=".github/workflows" 
+cd "$DIR"
 # Check if the Github Actions folder exists, otherwise create it
 if [ ! -d "$GITHUB_ACTIONS_FOLDER" ]; then
     echo "Github Actions folder does not exist. Creating..."
