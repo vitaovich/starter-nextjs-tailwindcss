@@ -1,4 +1,4 @@
-# #! /bin/bash
+# ! /bin/bash
 PROJECTDIR=$(basename $(pwd))
 
 setup_folder="SETUP"
@@ -60,7 +60,7 @@ git commit -a -m "setup initial"
 git push
 
 # Variables for Azure resource group, service principal, and Terraform
-service_principal_name="$PROJECTDIR_sp"
+service_principal_name=$PROJECTDIR"_sp"
 
 # Function to log in to Azure and create a service principal
 create_service_principal() {
@@ -77,11 +77,11 @@ create_service_principal() {
     ARM_CLIENT_SECRET=$(echo "$sp_info" | jq -r '.password')
     ARM_TENANT_ID=$(echo "$sp_info" | jq -r '.tenant')
     echo "Service principal created for $sub_name:"
-    echo "Info $sp_info"
-    echo "ARM_CLIENT_ID=$ARM_CLIENT_ID"
-    echo "ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET"
-    echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
-    echo "ARM_TENANT_ID=$ARM_TENANT_ID"
+    # echo "Info $sp_info"
+    # echo "ARM_CLIENT_ID=$ARM_CLIENT_ID"
+    # echo "ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET"
+    # echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
+    # echo "ARM_TENANT_ID=$ARM_TENANT_ID"
 }
 
 delete_service_principal() {
@@ -107,7 +107,7 @@ create_service_principal
 run_terraform
 delete_service_principal
 
-azswa_api_key=$(az staticwebapp secrets list --name mytest --query "properties.apiKey" -o tsv) 
+azswa_api_key=$(az staticwebapp secrets list --name $az_static_web_app_name --query "properties.apiKey" -o tsv) 
 gh auth login -w
 echo "Set up Secret API Key for Github Action deployment to Azure Static Web App"
 gh secret set AZSWA_API_KEY --body $azswa_api_key
@@ -119,6 +119,7 @@ if [ ! -d "$GITHUB_ACTIONS_FOLDER" ]; then
     echo "Github Actions folder does not exist. Creating..."
     mkdir -p "$GITHUB_ACTIONS_FOLDER"
 fi
+
 github_actions_files=("deploy_az_static_web_app.yml")
 for file in "${github_actions_files[@]}"; do
     cp "$setup_folder/$GITHUB_ACTIONS_FOLDER/$file" "$GITHUB_ACTIONS_FOLDER/$file" 
